@@ -27,10 +27,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: jetify-com/devbox-install-action@v0.11.0
+      # - uses: jetify-com/devbox-install-action@v0.11.0
+      #   with:
+      #     enable-cache: 'false'
+      #     devbox-version: '0.10.7-deva'
+
+      - uses: actions/checkout@v4
         with:
-          enable-cache: 'false'
-          devbox-version: '0.10.7-deva'
+          repository: jetify-com/devbox
+          ref: gcurtis/systemd-cache-fix
+
+      - uses: actions/setup-go@v5
+      - run: |
+          go build -o devbox ./cmd/devbox
+          sudo mv devbox /usr/local/bin/devbox
 
       - name: Debug
         run: |
