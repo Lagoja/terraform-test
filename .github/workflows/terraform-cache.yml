@@ -32,6 +32,88 @@ jobs:
           enable-cache: 'false'
           devbox-version: '0.10.7-deva'
 
+      - name: Debug
+        run: |
+          cat > $GITHUB_STEP_SUMMARY <<EOF
+          # Debug Information
+
+          ## System
+
+          $(uname -a 2>&1 | sed 's/^/\t/')
+
+          ## User
+
+          $(id 2>&1 | sed 's/^/\t/')
+
+          ## Environment
+
+          $(export 2>&1 | sed 's/^/\t/')
+
+          ## File Permissions
+
+          ### ~
+
+          $(stat -c 'path  = %R%ntype  = %HT%nuser  = %Su (%Du)%ngroup = %Sg (%Dg)%nperms = %Op (%Sp)' ~ 2>&1 | sed 's/^/\t/')
+
+          ### ~/.local
+
+          $(stat -c 'path  = %R%ntype  = %HT%nuser  = %Su (%Du)%ngroup = %Sg (%Dg)%nperms = %Op (%Sp)' ~/.local 2>&1 | sed 's/^/\t/')
+
+          ### ~/.local/state
+
+          $(stat -c 'path  = %R%ntype  = %HT%nuser  = %Su (%Du)%ngroup = %Sg (%Dg)%nperms = %Op (%Sp)' ~/.local/state 2>&1 | sed 's/^/\t/')
+
+          ### ~/.cache
+
+          $(stat -c 'path  = %R%ntype  = %HT%nuser  = %Su (%Du)%ngroup = %Sg (%Dg)%nperms = %Op (%Sp)' ~/.cache 2>&1 | sed 's/^/\t/')
+
+          ### ~/.config
+
+          $(stat -c 'path  = %R%ntype  = %HT%nuser  = %Su (%Du)%ngroup = %Sg (%Dg)%nperms = %Op (%Sp)' ~/.config 2>&1 | sed 's/^/\t/')
+
+          ### /nix/store
+
+          $(stat -c 'path  = %R%ntype  = %HT%nuser  = %Su (%Du)%ngroup = %Sg (%Dg)%nperms = %Op (%Sp)' /nix/store 2>&1 | sed 's/^/\t/')
+
+          ### /nix/var/nix/daemon-socket/socket
+
+          $(stat -c 'path  = %R%ntype  = %HT%nuser  = %Su (%Du)%ngroup = %Sg (%Dg)%nperms = %Op (%Sp)' /nix/var/nix/daemon-socket/socket 2>&1 | sed 's/^/\t/')
+
+          ## Devbox Version
+
+          $(devbox version -v 2>&1 | sed 's/^/\t/')
+
+          ## Nix Version
+
+          $(nix --version --debug 2>&1 | sed 's/^/\t/')
+
+          ## Nix Config
+
+          ### Directory
+
+          $(ls /etc/nix 2>&1 | sed 's/^/\t/')
+
+          ### nix.conf
+
+          $(cat /etc/nix/nix.conf 2>&1 | sed 's/^/\t/')
+
+          ### devbox-nix.conf
+
+          $(cat /etc/nix/devbox-nix.conf 2>&1 | sed 's/^/\t/')
+
+          ### Resolved
+
+          $(nix config show 2>&1 | sed 's/^/\t/')
+
+          ## Nix Daemon
+
+          $(nix store ping --store auto 2>&1 | sed 's/^/\t/')
+
+          ## systemd
+
+          $(systemctl list-units --type=service 2>&1 | sed 's/^/\t/')
+          EOF
+
       - name: Devbox install
         run: devbox install
 
