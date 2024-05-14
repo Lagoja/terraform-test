@@ -29,7 +29,7 @@ jobs:
 
       - uses: jetify-com/devbox-install-action@v0.11.0
         with:
-          enable-cache: 'true'
+          enable-cache: 'false'
 
       - name: Devbox install
         run: devbox install
