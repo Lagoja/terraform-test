@@ -5,7 +5,7 @@ defaults:
     shell: bash
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       env:
         required: true
