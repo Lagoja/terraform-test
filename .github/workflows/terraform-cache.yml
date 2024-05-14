@@ -1,0 +1,41 @@
+name: Terraform
+
+defaults:
+  run:
+    shell: bash
+
+on:
+  workflow_call:
+    inputs:
+      env:
+        required: true
+        type: string
+        description: Which account to deploy in (testing/staging/production)
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  DEVBOX_API_TOKEN: ${{ secrets.DEVBOX_API_TOKEN }}
+  DEVBOX_DEBUG: "1"
+
+jobs:
+  terraform:
+    name: Terraform
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: jetify-com/devbox-install-action@v0.11.0
+        with:
+          enable-cache: 'true'
+
+      - name: Devbox install
+        run: devbox install
+
+      - name: Devbox cache
+        run: devbox cache upload
+
+      - name: Test terraform
+        run: devbox run terraform --version
