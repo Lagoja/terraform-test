@@ -19,30 +19,53 @@ permissions:
 env:
   DEVBOX_API_TOKEN: ${{ secrets.DEVBOX_API_TOKEN }}
   DEVBOX_DEBUG: "1"
+  DEVBOX_PROD: "1"
 
 jobs:
   terraform:
     name: Terraform
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
 
       # - uses: jetify-com/devbox-install-action@v0.11.0
       #   with:
       #     enable-cache: 'false'
       #     devbox-version: '0.10.7-deva'
 
-      - uses: actions/checkout@v4
+      - name: Checkout jetify-com/devbox
+        uses: actions/checkout@v4
         with:
           repository: jetify-com/devbox
           ref: gcurtis/systemd-cache-fix
+          path: devbox
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: devbox/go.mod
+      - name: Build and install Devbox
+        run: |
+          cd devbox
+          mkdir bin
+          go build -o bin/devbox ./cmd/devbox
+          sudo mv bin/devbox /usr/local/bin/devbox
 
-      - uses: actions/setup-go@v5
-      - run: |
-          go build -o devbox ./cmd/devbox
-          sudo mv devbox /usr/local/bin/devbox
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v11
+        with:
+          logger: pretty
+          extra-conf: experimental-features = ca-derivations fetch-closure
+
+      - name: Checkout ${{ github.repository }}
+        uses: actions/checkout@v4
+        with:
+          path: terraform-test
+
+      - name: Devbox install
+        working-directory: terraform-test
+        run: devbox install
 
       - name: Debug
+        working-directory: terraform-test
         run: |
           cat > $GITHUB_STEP_SUMMARY <<EOF
           # Debug Information
@@ -63,35 +86,83 @@ jobs:
 
           ### ~
 
-          $(stat -c 'path  = %R%ntype  = %HT%nuser  = %Su (%Du)%ngroup = %Sg (%Dg)%nperms = %Op (%Sp)' ~ 2>&1 | sed 's/^/\t/')
+          $(stat --printf='path  = %N\ntype  = %F\nuser  = %U (%u)\ngroup = %G (%g)\nperms = %A (%a)' ~ 2>&1 | sed 's/^/\t/')
 
           ### ~/.local
 
-          $(stat -c 'path  = %R%ntype  = %HT%nuser  = %Su (%Du)%ngroup = %Sg (%Dg)%nperms = %Op (%Sp)' ~/.local 2>&1 | sed 's/^/\t/')
+          $(stat --printf='path  = %N\ntype  = %F\nuser  = %U (%u)\ngroup = %G (%g)\nperms = %A (%a)' ~/.local 2>&1 | sed 's/^/\t/')
 
           ### ~/.local/state
 
-          $(stat -c 'path  = %R%ntype  = %HT%nuser  = %Su (%Du)%ngroup = %Sg (%Dg)%nperms = %Op (%Sp)' ~/.local/state 2>&1 | sed 's/^/\t/')
+          $(stat --printf='path  = %N\ntype  = %F\nuser  = %U (%u)\ngroup = %G (%g)\nperms = %A (%a)' ~/.local/state 2>&1 | sed 's/^/\t/')
+
+          ### ~/.local/state/devbox
+
+          $(stat --printf='path  = %N\ntype  = %F\nuser  = %U (%u)\ngroup = %G (%g)\nperms = %A (%a)' ~/.local/state/devbox 2>&1 | sed 's/^/\t/')
+
+          ### ~/.local/state/devbox/nixcache-setup
+
+          $(stat --printf='path  = %N\ntype  = %F\nuser  = %U (%u)\ngroup = %G (%g)\nperms = %A (%a)' ~/.local/state/devbox/nixcache-setup 2>&1 | sed 's/^/\t/')
 
           ### ~/.cache
 
-          $(stat -c 'path  = %R%ntype  = %HT%nuser  = %Su (%Du)%ngroup = %Sg (%Dg)%nperms = %Op (%Sp)' ~/.cache 2>&1 | sed 's/^/\t/')
+          $(stat --printf='path  = %N\ntype  = %F\nuser  = %U (%u)\ngroup = %G (%g)\nperms = %A (%a)' ~/.cache 2>&1 | sed 's/^/\t/')
+
+          ### ~/.cache/devbox
+
+          $(stat --printf='path  = %N\ntype  = %F\nuser  = %U (%u)\ngroup = %G (%g)\nperms = %A (%a)' ~/.cache/devbox 2>&1 | sed 's/^/\t/')
+
+          ### ~/.cache/devbox/providers
+
+          $(stat --printf='path  = %N\ntype  = %F\nuser  = %U (%u)\ngroup = %G (%g)\nperms = %A (%a)' ~/.cache/devbox/providers 2>&1 | sed 's/^/\t/')
+
+          ### ~/.cache/devbox/providers/nixcache
+
+          $(stat --printf='path  = %N\ntype  = %F\nuser  = %U (%u)\ngroup = %G (%g)\nperms = %A (%a)' ~/.cache/devbox/providers/nixcache 2>&1 | sed 's/^/\t/')
+
+          ### ~/.cache/devbox/providers/nixcache/*
+
+          $(stat --printf='path  = %N\ntype  = %F\nuser  = %U (%u)\ngroup = %G (%g)\nperms = %A (%a)' ~/.cache/devbox/providers/nixcache/* 2>&1 | sed 's/^/\t/')
+
+          ### ~/.cache/jetify
+
+          $(stat --printf='path  = %N\ntype  = %F\nuser  = %U (%u)\ngroup = %G (%g)\nperms = %A (%a)' ~/.cache/jetify 2>&1 | sed 's/^/\t/')
+
+          ### ~/.cache/jetify/auth
+
+          $(stat --printf='path  = %N\ntype  = %F\nuser  = %U (%u)\ngroup = %G (%g)\nperms = %A (%a)' ~/.cache/jetify/auth 2>&1 | sed 's/^/\t/')
+
+          ### ~/.cache/jetify/auth/*
+
+          $(stat --printf='path  = %N\ntype  = %F\nuser  = %U (%u)\ngroup = %G (%g)\nperms = %A (%a)' ~/.cache/jetify/auth/* 2>&1 | sed 's/^/\t/')
 
           ### ~/.config
 
-          $(stat -c 'path  = %R%ntype  = %HT%nuser  = %Su (%Du)%ngroup = %Sg (%Dg)%nperms = %Op (%Sp)' ~/.config 2>&1 | sed 's/^/\t/')
+          $(stat --printf='path  = %N\ntype  = %F\nuser  = %U (%u)\ngroup = %G (%g)\nperms = %A (%a)' ~/.config 2>&1 | sed 's/^/\t/')
+
+          ### ~root/.aws
+
+          $(sudo stat --printf='path  = %N\ntype  = %F\nuser  = %U (%u)\ngroup = %G (%g)\nperms = %A (%a)' ~root/.aws 2>&1 | sed 's/^/\t/')
+
+          ### ~root/.aws/config
+
+          $(sudo stat --printf='path  = %N\ntype  = %F\nuser  = %U (%u)\ngroup = %G (%g)\nperms = %A (%a)' ~root/.aws/config 2>&1 | sed 's/^/\t/')
 
           ### /nix/store
 
-          $(stat -c 'path  = %R%ntype  = %HT%nuser  = %Su (%Du)%ngroup = %Sg (%Dg)%nperms = %Op (%Sp)' /nix/store 2>&1 | sed 's/^/\t/')
+          $(stat --printf='path  = %N\ntype  = %F\nuser  = %U (%u)\ngroup = %G (%g)\nperms = %A (%a)' /nix/store 2>&1 | sed 's/^/\t/')
 
           ### /nix/var/nix/daemon-socket/socket
 
-          $(stat -c 'path  = %R%ntype  = %HT%nuser  = %Su (%Du)%ngroup = %Sg (%Dg)%nperms = %Op (%Sp)' /nix/var/nix/daemon-socket/socket 2>&1 | sed 's/^/\t/')
+          $(stat --printf='path  = %N\ntype  = %F\nuser  = %U (%u)\ngroup = %G (%g)\nperms = %A (%a)' /nix/var/nix/daemon-socket/socket 2>&1 | sed 's/^/\t/')
 
           ## Devbox Version
 
           $(devbox version -v 2>&1 | sed 's/^/\t/')
+
+          ## Devbox Auth
+
+          $(devbox auth whoami 2>&1 | sed 's/^/\t/')
 
           ## Nix Version
 
@@ -117,18 +188,21 @@ jobs:
 
           ## Nix Daemon
 
-          $(nix store ping --store auto 2>&1 | sed 's/^/\t/')
+          $(nix store info --store auto 2>&1 | sed 's/^/\t/')
+
+          ## Root AWS config
+
+          $(sudo cat ~root/.aws/config 2>&1 | sed 's/^/\t/')
 
           ## systemd
 
           $(systemctl list-units --type=service 2>&1 | sed 's/^/\t/')
           EOF
 
-      - name: Devbox install
-        run: devbox install
-
       - name: Devbox cache
+        working-directory: terraform-test
         run: devbox cache upload
 
       - name: Test terraform
+        working-directory: terraform-test
         run: devbox run terraform --version
