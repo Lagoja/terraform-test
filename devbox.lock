@@ -1,0 +1,165 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "nodejs@18": {
+      "last_modified": "2024-05-05T12:27:12Z",
+      "resolved": "github:NixOS/nixpkgs/ee4a6e0f566fe5ec79968c57a9c2c3c25f2cf41d#nodejs_18",
+      "source": "devbox-search",
+      "version": "18.20.2",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/xy401sh76x0icf5n9s6ardray49x8g5i-nodejs-18.20.2",
+              "default": true
+            },
+            {
+              "name": "libv8",
+              "path": "/nix/store/a4dx5ack92dvjy62m4887qr81a617hi0-nodejs-18.20.2-libv8"
+            }
+          ],
+          "store_path": "/nix/store/xy401sh76x0icf5n9s6ardray49x8g5i-nodejs-18.20.2"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/rzh3aqa7xj3zgc26lnbhnlzg7qagqnqc-nodejs-18.20.2",
+              "default": true
+            },
+            {
+              "name": "libv8",
+              "path": "/nix/store/w6g5bi35p046w5r75ylbd9y23b9vgh01-nodejs-18.20.2-libv8"
+            }
+          ],
+          "store_path": "/nix/store/rzh3aqa7xj3zgc26lnbhnlzg7qagqnqc-nodejs-18.20.2"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/glylknc59rrdiggsjxfwl16k2h6jl22s-nodejs-18.20.2",
+              "default": true
+            },
+            {
+              "name": "libv8",
+              "path": "/nix/store/3pc9mrs9788yp645134n8vzfa7gs2kv7-nodejs-18.20.2-libv8"
+            }
+          ],
+          "store_path": "/nix/store/glylknc59rrdiggsjxfwl16k2h6jl22s-nodejs-18.20.2"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/zsdfz83ilpz26gm44r0fh7h5bqabc4cf-nodejs-18.20.2",
+              "default": true
+            },
+            {
+              "name": "libv8",
+              "path": "/nix/store/77r4wp653wlbvgi6rhy40whl5xs7dhvp-nodejs-18.20.2-libv8"
+            }
+          ],
+          "store_path": "/nix/store/zsdfz83ilpz26gm44r0fh7h5bqabc4cf-nodejs-18.20.2"
+        }
+      }
+    },
+    "ripgrep@latest": {
+      "last_modified": "2024-05-10T13:10:33Z",
+      "resolved": "github:NixOS/nixpkgs/d42c1c8d447a388e1f2776d22c77f5642d703da6#ripgrep",
+      "source": "devbox-search",
+      "version": "14.1.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/5lmh649gipiihmpwqvlshj5qw7ajk3kv-ripgrep-14.1.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/5lmh649gipiihmpwqvlshj5qw7ajk3kv-ripgrep-14.1.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/hf9dqxh02y1bkk4y74ym6w23mrw424lz-ripgrep-14.1.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/hf9dqxh02y1bkk4y74ym6w23mrw424lz-ripgrep-14.1.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/02i3hx2m4fmqgfgrjf5p6vz4m06yjdhx-ripgrep-14.1.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/02i3hx2m4fmqgfgrjf5p6vz4m06yjdhx-ripgrep-14.1.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/jv8dkgwdl800ga2c960d9c1n13y2kpw0-ripgrep-14.1.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/jv8dkgwdl800ga2c960d9c1n13y2kpw0-ripgrep-14.1.0"
+        }
+      }
+    },
+    "terraform@latest": {
+      "last_modified": "2024-05-09T19:13:33Z",
+      "resolved": "github:NixOS/nixpkgs/cc6431d5598071f0021efc6c009c79e5b5fe1617#terraform",
+      "source": "devbox-search",
+      "version": "1.8.3",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/k9v3wy9av1bdry9rriapcnqpq70x4x12-terraform-1.8.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/k9v3wy9av1bdry9rriapcnqpq70x4x12-terraform-1.8.3"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/lq4ypml7rnfm8a7syqqrxwf6ka21qx9x-terraform-1.8.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/lq4ypml7rnfm8a7syqqrxwf6ka21qx9x-terraform-1.8.3"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/36qha7g0mmjzd4dln49bgi62n9b97i3r-terraform-1.8.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/36qha7g0mmjzd4dln49bgi62n9b97i3r-terraform-1.8.3"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/jkqgkkmb2dchw2h0p2lawa1a3gm11rzi-terraform-1.8.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/jkqgkkmb2dchw2h0p2lawa1a3gm11rzi-terraform-1.8.3"
+        }
+      }
+    }
+  }
+}
