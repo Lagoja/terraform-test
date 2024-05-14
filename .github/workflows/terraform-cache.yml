@@ -36,7 +36,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: jetify-com/devbox
-          ref: gcurtis/systemd-cache-fix
+          ref: main
           path: devbox
       - name: Install Go
         uses: actions/setup-go@v5
@@ -197,6 +197,10 @@ jobs:
           ## systemd
 
           $(systemctl list-units --type=service 2>&1 | sed 's/^/\t/')
+
+          ## Flake
+
+          $(cat .devbox/gen/flake/flake.nix 2>&1 | sed 's/^/\t/')
           EOF
 
       - name: Devbox cache
